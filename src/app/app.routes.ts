@@ -5,6 +5,8 @@ import { CustomerDashboard } from './customer-dashboard/customer-dashboard';
 import { OfficerDashboard } from './officer-dashboard/officer-dashboard';
 import { OfficerKyc } from './officer-kyc/officer-kyc';
 import { CustomerKyc } from './customer-kyc/customer-kyc';
+import { EmiPayment } from './emi-payment/emi-payment';
+import { ForeClosure } from './fore-closure/fore-closure';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,7 +17,10 @@ export const routes: Routes = [
 
     { path: 'officer-dashboard', redirectTo: 'officer/dashboard' },
   { path: 'customer-dashboard', redirectTo: 'customer/dashboard' },
-
+   
+   {path :'emi', component : EmiPayment},
+   {path :'foreclosure', component : ForeClosure},
+  
   { path: '**', redirectTo: 'login' },
   {
   path: 'customer/kyc',
