@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 import { Auth } from './auth/auth';
 import { CustomerDashboard } from './customer-dashboard/customer-dashboard';
 import { OfficerDashboard } from './officer-dashboard/officer-dashboard';
+import { OfficerKyc } from './officer-kyc/officer-kyc';
+import { CustomerKyc } from './customer-kyc/customer-kyc';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,5 +16,13 @@ export const routes: Routes = [
     { path: 'officer-dashboard', redirectTo: 'officer/dashboard' },
   { path: 'customer-dashboard', redirectTo: 'customer/dashboard' },
 
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
+  {
+  path: 'customer/kyc',
+  component: CustomerKyc
+},
+ {
+  path: 'officer/kyc',
+  component: OfficerKyc
+}
 ];
