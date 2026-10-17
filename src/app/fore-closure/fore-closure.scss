@@ -285,3 +285,100 @@ textarea.form-control {
     width: 100%;
   }
 }
+
+
+
+.requests-container {
+  background: #ffffff;
+  padding: 35px 40px;
+  margin: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 750;
+  color: #172b3d;
+  margin-bottom: 25px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  color: #111;
+}
+
+.requests-table thead {
+  background: #f5f6f7;
+}
+
+.requests-table th {
+  text-align: left;
+  padding: 12px 8px;
+  font-weight: 700;
+  white-space: nowrap;
+  border-bottom: 1px solid #ced4da;
+}
+
+.requests-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #dce1e6;
+  vertical-align: middle;
+}
+
+.requests-table tbody tr:hover {
+  background: #f2f4f7;
+}
+
+.loan-account {
+  font-weight: 700;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pending {
+  background: #ffb900;
+  color: #111;
+}
+
+.paid,
+.approved {
+  background: #168957;
+  color: white;
+}
+
+.rejected {
+  background: #dc3545;
+  color: white;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 25px !important;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .requests-container {
+    margin: 10px;
+    padding: 20px 15px;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+}

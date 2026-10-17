@@ -7,6 +7,8 @@ import { OfficerKyc } from './officer-kyc/officer-kyc';
 import { CustomerKyc } from './customer-kyc/customer-kyc';
 import { EmiPayment } from './emi-payment/emi-payment';
 import { ForeClosure } from './fore-closure/fore-closure';
+import { ForeClosureRequest } from './fore-closure-request/fore-closure-request';
+import { Foreclosuredetails } from './foreclosuredetails/foreclosuredetails';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,8 +22,11 @@ export const routes: Routes = [
    
    {path :'emi', component : EmiPayment},
    {path :'foreclosure', component : ForeClosure},
-  
-  { path: '**', redirectTo: 'login' },
+  {path :'foreclorequest', component : ForeClosureRequest},
+
+  { path: 'foreclosure-details/:id', component: Foreclosuredetails},
+
+  { path: '**', redirectTo: 'login' }, 
   {
   path: 'customer/kyc',
   component: CustomerKyc

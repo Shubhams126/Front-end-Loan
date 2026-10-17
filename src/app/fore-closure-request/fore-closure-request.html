@@ -1,0 +1,74 @@
+<div class="request-container">
+
+  <h2>Foreclosure / Closure Requests</h2>
+
+  <p class="subtitle">
+    Manage customer foreclosure and closure requests
+  </p>
+
+  <div class="table-responsive">
+    <table class="requests-table">
+
+      <thead>
+        <tr>
+          <th>Request ID</th>
+          <th>Loan Account</th>
+          <th>Customer Name</th>
+          <th>Type</th>
+          <th>Request Date</th>
+          <th>Outstanding Principal</th>
+          <th>Foreclosure Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let req of allrequests">
+
+          <td><strong>{{ req.requestId }}</strong></td>
+
+          <td>{{ req.loanAccountNo }}</td>
+
+          <td>{{ req.customerName }}</td>
+
+          <td>{{ req.foreClosureType }}</td>
+
+          <td>
+            {{ req.requestedDate | date:'dd MMM yyyy hh:mm a' }}
+          </td>
+
+          <td>
+            ₹ {{ req.outstandingPrincipal | number:'1.2-2' }}
+          </td>
+
+          <td>
+            ₹ {{ req.foreClosureAmount | number:'1.2-2' }}
+          </td>
+
+          <td>
+            <span class="status-badge"
+                  [ngClass]="(req.status || 'Pending').toLowerCase()">
+              {{ req.status || 'Pending' }}
+            </span>
+          </td>
+
+          <td>
+            <button class="view-btn" (click)="viewRequest(req)">
+              View
+            </button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="allrequests.length === 0">
+          <td colspan="9" class="empty-row">
+            No requests found.
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
