@@ -1,0 +1,339 @@
+
+<div class="dashboard-container">
+
+  <!-- Dashboard heading -->
+  <header class="dashboard-header">
+    <div>
+      <span class="eyebrow">LOAN ORIGINATION & MANAGEMENT</span>
+      <h1>Dashboard Overview</h1>
+      <p>Monitor your customers, loans and KYC activity in one place.</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="loadDashboard()"
+      [disabled]="isLoading">
+      <span class="refresh-icon">↻</span>
+      {{ isLoading ? 'Refreshing...' : 'Refresh Data' }}
+    </button>
+  </header>
+
+  <!-- Loading state -->
+  @if (isLoading) {
+    <section class="state-card">
+      <div class="loading-spinner"></div>
+      <h2>Loading dashboard</h2>
+      <p>Fetching the latest data from the server...</p>
+    </section>
+  }
+
+  <!-- Error state -->
+  @else if (errorMessage) {
+    <section class="state-card error-state">
+      <div class="state-icon">!</div>
+      <h2>Unable to load dashboard</h2>
+      <p>{{ errorMessage }}</p>
+      <button type="button" class="primary-button" (click)="loadDashboard()">
+        Try Again
+      </button>
+    </section>
+  }
+
+  <!-- Dashboard data -->
+  @else if (dashboardData; as data) {
+
+    <!-- Summary cards -->
+    <section class="summary-grid">
+
+      <article class="summary-card customers-card">
+        <div class="card-top">
+          <div class="metric-icon blue-icon">♙</div>
+          <span class="metric-label">Customer Base</span>
+        </div>
+
+        <div class="metric-value">
+          {{ data.totalCustomers | number }}
+        </div>
+
+        <div class="metric-footer">
+          <span class="metric-dot blue-dot"></span>
+          Total Registered Customers
+        </div>
+      </article>
+
+      <article class="summary-card loans-card">
+        <div class="card-top">
+          <div class="metric-icon green-icon">▣</div>
+          <span class="metric-label">Loan Customers</span>
+        </div>
+
+        <div class="metric-value">
+          {{ data.totalLoanCustomers | number }}
+        </div>
+
+        <div class="metric-footer">
+          <span class="metric-dot green-dot"></span>
+          Customers with loan accounts
+        </div>
+      </article>
+
+      <article class="summary-card kyc-card">
+        <div class="card-top">
+          <div class="metric-icon orange-icon">✓</div>
+          <span class="metric-label">Approved KYC</span>
+        </div>
+
+        <div class="metric-value">
+          {{ data.totalApprovedKyc | number }}
+        </div>
+
+        <div class="metric-footer">
+          <span class="metric-dot orange-dot"></span>
+          Verified KYC records
+        </div>
+      </article>
+
+      <article class="summary-card active-card">
+        <div class="card-top">
+          <div class="metric-icon purple-icon">↗</div>
+          <span class="metric-label">Active Loans</span>
+        </div>
+
+        <div class="metric-value">
+          {{ data.totalActiveLoans | number }}
+        </div>
+
+        <div class="metric-footer">
+          <span class="metric-dot purple-dot"></span>
+          Currently active accounts
+        </div>
+      </article>
+
+      <article class="summary-card amount-card">
+        <div class="card-top">
+          <div class="metric-icon red-icon">₹</div>
+          <span class="metric-label">Total Loan Amount</span>
+        </div>
+
+        <div class="metric-value amount-value">
+          {{ formatCurrency(data.totalLoanAmount) }}
+        </div>
+
+        <div class="metric-footer">
+          <span class="metric-dot red-dot"></span>
+          Loan account amount total
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Main dashboard panels -->
+    <section class="main-grid">
+
+      <!-- Loan overview -->
+      <article class="panel loan-overview">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-eyebrow">PORTFOLIO OVERVIEW</span>
+            <h2>Loan Account Overview</h2>
+          </div>
+
+          <span class="live-indicator">
+            <span></span>
+            API Connected
+          </span>
+        </div>
+
+        <div class="overview-content">
+          <div class="overview-highlight">
+            <div class="overview-icon">₹</div>
+            <div>
+              <p>Total Loan Amount</p>
+              <h3>{{ formatCurrency(data.totalLoanAmount) }}</h3>
+            </div>
+          </div>
+
+          <div class="overview-divider"></div>
+
+          <div class="overview-stat">
+            <span>Registered Customers</span>
+            <strong>{{ data.totalCustomers | number }}</strong>
+          </div>
+
+          <div class="overview-stat">
+            <span>Loan Customers</span>
+            <strong>{{ data.totalLoanCustomers | number }}</strong>
+          </div>
+
+          <div class="overview-stat">
+            <span>Active Loan Accounts</span>
+            <strong>{{ data.totalActiveLoans | number }}</strong>
+          </div>
+
+          <div class="overview-stat">
+            <span>Approved KYC Records</span>
+            <strong>{{ data.totalApprovedKyc | number }}</strong>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <span class="footer-check">✓</span>
+          Figures loaded from your Dashboard API
+        </div>
+      </article>
+
+      <!-- Customer and loan comparison -->
+      <article class="panel portfolio-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-eyebrow">CUSTOMER INSIGHTS</span>
+            <h2>Portfolio Summary</h2>
+          </div>
+          <span class="panel-symbol">◉</span>
+        </div>
+
+        <div class="portfolio-total">
+          <span>Total Customers</span>
+          <strong>{{ data.totalCustomers | number }}</strong>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label">
+            <span><i class="legend-dot customer-legend"></i>Registered Customers</span>
+            <strong>{{ data.totalCustomers | number }}</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill customer-fill"
+              [style.width.%]="data.totalCustomers > 0 ? 100 : 0">
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label">
+            <span><i class="legend-dot loan-legend"></i>Loan Customers</span>
+            <strong>{{ data.totalLoanCustomers | number }}</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill loan-fill"
+              [style.width.%]="data.totalCustomers > 0
+                ? (data.totalLoanCustomers / data.totalCustomers * 100 > 100
+                  ? 100
+                  : data.totalLoanCustomers / data.totalCustomers * 100)
+                : 0">
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label">
+            <span><i class="legend-dot active-legend"></i>Active Loans</span>
+            <strong>{{ data.totalActiveLoans | number }}</strong>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill active-fill"
+              [style.width.%]="data.totalLoanCustomers > 0
+                ? (data.totalActiveLoans / data.totalLoanCustomers * 100 > 100
+                  ? 100
+                  : data.totalActiveLoans / data.totalLoanCustomers * 100)
+                : 0">
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-note">
+          <span class="note-icon">i</span>
+          <p>
+            These bars compare the available totals. They are not loan approval
+            or repayment percentages.
+          </p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Bottom information panels -->
+    <section class="bottom-grid">
+
+      <article class="panel information-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-eyebrow">CUSTOMER VERIFICATION</span>
+            <h2>KYC Summary</h2>
+          </div>
+          <div class="small-panel-icon orange-icon">✓</div>
+        </div>
+
+        <div class="information-number">
+          {{ data.totalApprovedKyc | number }}
+        </div>
+        <p class="information-description">
+          Approved KYC records currently reported by the backend.
+        </p>
+
+        <div class="information-footer">
+          <span class="status-pill verified-pill">Approved records</span>
+        </div>
+      </article>
+
+      <article class="panel information-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-eyebrow">ACCOUNT ACTIVITY</span>
+            <h2>Active Loan Summary</h2>
+          </div>
+          <div class="small-panel-icon green-icon">▣</div>
+        </div>
+
+        <div class="information-number">
+          {{ data.totalActiveLoans | number }}
+        </div>
+        <p class="information-description">
+          Loan accounts currently marked as active in the database.
+        </p>
+
+        <div class="information-footer">
+          <span class="status-pill active-pill">Active accounts</span>
+        </div>
+      </article>
+
+      <article class="panel information-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-eyebrow">SYSTEM STATUS</span>
+            <h2>Dashboard Data</h2>
+          </div>
+          <div class="small-panel-icon blue-icon">↻</div>
+        </div>
+
+        <div class="system-status">
+          <span class="system-status-dot"></span>
+          Dashboard data loaded
+        </div>
+
+        <p class="information-description">
+          The summary cards use the response returned by your existing .NET
+          Dashboard API.
+        </p>
+
+        <div class="information-footer">
+          <button
+            type="button"
+            class="inline-refresh"
+            (click)="loadDashboard()">
+            Refresh dashboard →
+          </button>
+        </div>
+      </article>
+
+    </section>
+
+    <footer class="dashboard-footer">
+      <span>FinSure Loans · LOS &amp; LMS</span>
+      <span>Dashboard Overview</span>
+    </footer>
+
+  }
+
+</div>

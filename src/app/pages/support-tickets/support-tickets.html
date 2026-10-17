@@ -1,0 +1,368 @@
+
+<div class="support-page">
+
+    <!-- Page heading -->
+    <div class="page-header">
+      <div>
+        <h1>Support Tickets</h1>
+        <p>Raise support requests and track their progress.</p>
+      </div>
+    </div>
+  
+    <!-- Customer and officer view buttons -->
+    <div class="view-buttons">
+      <button
+        type="button"
+        [class.active]="viewMode === 'customer'"
+        (click)="changeView('customer')">
+        My Tickets
+      </button>
+  
+      <button
+        type="button"
+        [class.active]="viewMode === 'officer'"
+        (click)="changeView('officer')">
+        All Tickets (Officer)
+      </button>
+    </div>
+  
+    <!-- Success message -->
+    <div class="alert success" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+  
+    <!-- Error message -->
+    <div class="alert error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Customer view -->
+    <div *ngIf="viewMode === 'customer'">
+  
+      <!-- Create ticket form -->
+      <section class="ticket-card">
+        <h2>Raise a New Ticket</h2>
+        <p class="section-description">
+          Describe your issue so our support team can assist you.
+        </p>
+  
+        <form (ngSubmit)="addTicket()" #ticketForm="ngForm">
+  
+          <div class="form-group">
+            <label for="subject">Subject</label>
+  
+            <input
+              id="subject"
+              name="subject"
+              type="text"
+              [(ngModel)]="subject"
+              placeholder="Enter ticket subject"
+              required
+              maxlength="150" />
+          </div>
+  
+          <div class="form-group">
+            <label for="description">Description</label>
+  
+            <textarea
+              id="description"
+              name="description"
+              [(ngModel)]="description"
+              placeholder="Explain your issue in detail"
+              rows="4"
+              required>
+            </textarea>
+          </div>
+  
+          <div class="form-group">
+            <label for="attachment">Attachment (optional)</label>
+  
+            <input
+              id="attachment"
+              name="attachment"
+              type="file"
+              accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
+              (change)="onFileSelected($event)" />
+  
+            <small *ngIf="selectedFile">
+              Selected file: {{ selectedFile.name }}
+            </small>
+          </div>
+  
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isSubmitting || !ticketForm.valid">
+  
+            {{ isSubmitting ? 'Submitting...' : 'Submit Ticket' }}
+          </button>
+  
+        </form>
+      </section>
+  
+      <!-- Customer ticket list -->
+      <section class="ticket-card">
+        <div class="section-header">
+          <div>
+            <h2>My Support Requests</h2>
+            <p class="section-description">
+              View your submitted tickets and their current status.
+            </p>
+          </div>
+  
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="loadMyTickets()">
+            Refresh
+          </button>
+        </div>
+  
+        <p *ngIf="isLoading">Loading tickets...</p>
+  
+        <div class="table-container" *ngIf="!isLoading">
+          <table *ngIf="myTickets.length > 0; else noCustomerTickets">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Subject</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+  
+            <tbody>
+              <tr *ngFor="let ticket of myTickets">
+                <td>#{{ ticket.ticketId }}</td>
+                <td>{{ ticket.subject }}</td>
+                <td>{{ ticket.createdDate | date:'mediumDate' }}</td>
+  
+                <td>
+                  <span
+                    class="status"
+                    [ngClass]="{
+                      'pending': ticket.status === 'Pending',
+                      'in-progress': ticket.status === 'InProgress',
+                      'resolved': ticket.status === 'Resolved'
+                    }">
+                    {{ ticket.status }}
+                  </span>
+                </td>
+  
+                <td>
+                  <button
+                    type="button"
+                    class="text-button"
+                    (click)="viewTicket(ticket.ticketId)">
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+  
+          <ng-template #noCustomerTickets>
+            <p class="empty-message">
+              No support tickets found for this customer.
+            </p>
+          </ng-template>
+        </div>
+      </section>
+  
+    </div>
+  
+    <!-- Officer view -->
+    <section
+      class="ticket-card"
+      *ngIf="viewMode === 'officer'">
+  
+      <div class="section-header">
+        <div>
+          <h2>All Support Tickets</h2>
+          <p class="section-description">
+            Review customer issues and update ticket status.
+          </p>
+        </div>
+  
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="loadAllTickets()">
+          Refresh
+        </button>
+      </div>
+  
+      <p *ngIf="isLoading">Loading tickets...</p>
+  
+      <div class="table-container" *ngIf="!isLoading">
+        <table *ngIf="allTickets.length > 0; else noOfficerTickets">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Customer</th>
+              <th>Loan Account</th>
+              <th>Subject</th>
+              <th>Created Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr *ngFor="let ticket of allTickets">
+              <td>#{{ ticket.ticketId }}</td>
+              <td>{{ ticket.customerName }}</td>
+              <td>{{ ticket.loanAccountNo }}</td>
+              <td>{{ ticket.subject }}</td>
+              <td>{{ ticket.createdDate | date:'mediumDate' }}</td>
+  
+              <td>
+                <span
+                  class="status"
+                  [ngClass]="{
+                    'pending': ticket.status === 'Pending',
+                    'in-progress': ticket.status === 'InProgress',
+                    'resolved': ticket.status === 'Resolved'
+                  }">
+                  {{ ticket.status }}
+                </span>
+              </td>
+  
+              <td>
+                <button
+                  type="button"
+                  class="text-button"
+                  (click)="viewTicket(ticket.ticketId)">
+                  Review Ticket
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <ng-template #noOfficerTickets>
+          <p class="empty-message">
+            No support tickets are available.
+          </p>
+        </ng-template>
+      </div>
+    </section>
+  
+    <!-- Selected ticket details -->
+    <section
+      class="ticket-card details-card"
+      *ngIf="selectedTicket">
+  
+      <div class="section-header">
+        <h2>Ticket Details #{{ selectedTicket.ticketId }}</h2>
+  
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeTicketDetails()">
+          Close
+        </button>
+      </div>
+  
+      <div class="details-grid">
+        <div>
+          <label>Customer</label>
+          <p>{{ selectedTicket.customerName }}</p>
+        </div>
+  
+        <div>
+          <label>Loan Account</label>
+          <p>{{ selectedTicket.loanAccountNo }}</p>
+        </div>
+  
+        <div>
+          <label>Subject</label>
+          <p>{{ selectedTicket.subject }}</p>
+        </div>
+  
+        <div>
+          <label>Created Date</label>
+          <p>{{ selectedTicket.createdDate | date:'medium' }}</p>
+        </div>
+  
+        <div>
+          <label>Status</label>
+          <p>{{ selectedTicket.status }}</p>
+        </div>
+  
+        <div>
+          <label>Description</label>
+          <p class="description-text">
+            {{ selectedTicket.description }}
+          </p>
+        </div>
+  
+        <div>
+          <label>Officer Response</label>
+          <p>
+            {{ selectedTicket.officerResponse || 'No response yet.' }}
+          </p>
+        </div>
+  
+        <div *ngIf="selectedTicket.attachmentPath">
+          <label>Attachment</label>
+          <p>
+            <a
+              [href]="'https://localhost:7121' + selectedTicket.attachmentPath"
+              target="_blank"
+              rel="noopener noreferrer">
+              View Attachment
+            </a>
+          </p>
+        </div>
+      </div>
+  
+      <!-- Officer-only controls in the UI -->
+      <div class="officer-update" *ngIf="viewMode === 'officer'">
+        <h3>Update Ticket</h3>
+  
+        <form (ngSubmit)="updateTicket()">
+  
+          <div class="form-group">
+            <label for="ticketStatus">Ticket Status</label>
+  
+            <select
+              id="ticketStatus"
+              name="ticketStatus"
+              [(ngModel)]="updatedStatus"
+              required>
+  
+              <option value="Pending">Pending</option>
+              <option value="InProgress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="officerResponse">Officer Response</label>
+  
+            <textarea
+              id="officerResponse"
+              name="officerResponse"
+              [(ngModel)]="officerResponse"
+              placeholder="Enter your response to the customer"
+              rows="4">
+            </textarea>
+          </div>
+  
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isSubmitting">
+  
+            {{ isSubmitting ? 'Updating...' : 'Update Ticket' }}
+          </button>
+  
+        </form>
+      </div>
+  
+    </section>
+  
+  </div>
+  
