@@ -8,15 +8,15 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoanAccounts, EmiSchedules],
+  imports: [RouterOutlet, LoanAccounts],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   openMenus: { [key: string]: boolean } = {
     customer: true,
     loans: false,
-    payments: false
+    payments: false,
   };
 
   notificationCount = 0;

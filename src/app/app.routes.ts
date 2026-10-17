@@ -1,4 +1,3 @@
-
 import { Routes } from '@angular/router';
 import { Cibil } from './cibil/cibil';
 import { CustomerList } from './customer-list/customer-list';
@@ -20,6 +19,8 @@ import { ApplyLoanComponent } from './pages/apply-loan/apply-loan';
 import { LoanDealComponent } from './pages/loan-deal/loan-deal';
 import { SanctionComponent } from './pages/sanction/sanction';
 import { DisbursementComponent } from './pages/disbursement/disbursement';
+import { EmiSchedules } from './emi-schedules/emi-schedules';
+import { LoanAccounts } from './loan-accounts/loan-accounts';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -42,6 +43,9 @@ export const routes: Routes = [
     {path:'manual-review',component:ManualReview}
   { path: 'emi', component: EmiPayment },
   { path: 'foreclosure', component: ForeClosure },
+
+  { path: 'loan-accounts', component: LoanAccounts },
+  { path: 'emi-schedules', component: EmiSchedules },
 
   { path: 'apply-loan', component: ApplyLoanComponent },
   { path: 'loan-deal', component: LoanDealComponent },

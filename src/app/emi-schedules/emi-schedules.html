@@ -95,14 +95,16 @@
             {{ emi.paymentStatus }}
           </td>
           <td>
-            <button
-              [disabled]="emi.paymentStatus == 'Paid'"
-              class="btn"
-              [style]="{ background: 'rgb(36, 238, 36)', color: 'white' }"
-            >
-              Pay
-            </button>
-          </td>
+  <button
+    [disabled]="emi.paymentStatus === 'Paid'"
+    class="btn"
+    [style]="{ background: 'rgb(36, 238, 36)', color: 'white' }"
+    [routerLink]="['/emi']"
+    [queryParams]="{ id: emi.EmiScheduleId }"
+  >
+    Pay
+  </button>
+</td>
         </tr>
 
         <tr *ngIf="allEmis.length === 0">

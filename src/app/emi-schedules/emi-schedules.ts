@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { LoanAccountService } from './../services/loan-account';
 import { EmiShedule } from './../services/emi-shedule';
 import { filter } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-emi-schedules',
-  imports: [NgFor, NgIf, DatePipe, CurrencyPipe, FormsModule],
+  imports: [NgFor, NgIf, DatePipe, CurrencyPipe, FormsModule, RouterLink],
   templateUrl: './emi-schedules.html',
   styleUrl: './emi-schedules.scss',
 })
@@ -28,7 +29,6 @@ export class EmiSchedules {
     this.loanService.getAllLoanAccounts().subscribe({
       next: (res: any) => {
         this.allLoanAccounts = res;
-
         this.cdr.detectChanges();
       },
       error: (err: any) => {
