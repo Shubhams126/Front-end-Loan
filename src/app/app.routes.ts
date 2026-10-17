@@ -20,7 +20,9 @@ import { ApplyLoanComponent } from './pages/apply-loan/apply-loan';
 import { LoanDealComponent } from './pages/loan-deal/loan-deal';
 import { SanctionComponent } from './pages/sanction/sanction';
 import { DisbursementComponent } from './pages/disbursement/disbursement';
-
+import { Dashboard } from './pages/dashboard/dashboard';
+import { Reports } from './pages/reports/reports';
+import { SupportTickets } from './pages/support-tickets/support-tickets';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -46,8 +48,27 @@ export const routes: Routes = [
   { path: 'apply-loan', component: ApplyLoanComponent },
   { path: 'loan-deal', component: LoanDealComponent },
   { path: 'sanction', component: SanctionComponent },
-  { path: 'disbursement', component: DisbursementComponent },
+  { path: 'disbursement', component: DisbursementComponent },{
+    path: 'dashboard',
+    component: Dashboard
+  },
+  {
+    path: 'reports',
+    component: Reports
+  },
+  {
+    path: 'support-tickets',
+    component: SupportTickets
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
+  }
 
   { path: '**', redirectTo: 'login' }
 
-];

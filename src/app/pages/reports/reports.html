@@ -1,0 +1,530 @@
+
+<div class="reports-page">
+
+  <!-- Page heading -->
+  <header class="reports-header">
+    <div>
+      <span class="page-eyebrow">FINsure LOANS · ANALYTICS</span>
+      <h1>Reports Dashboard</h1>
+      <p>Monitor loan origination, loan portfolio and repayment performance.</p>
+    </div>
+    <div class="reports-header-badge">
+      <span class="status-dot"></span>
+      LOS &amp; LMS Reports
+    </div>
+  </header>
+
+  <!-- LOS REPORTS -->
+  <section class="system-section los-section">
+    <div class="system-heading los-heading">
+      <div class="system-heading-icon">L</div>
+      <div>
+        <h2>LOS — Loan Origination System</h2>
+        <p>Application processing and origination performance</p>
+      </div>
+    </div>
+
+    @if (isLoading) {
+      <div class="loading-panel">Loading LOS dashboard...</div>
+    } @else if (errorMessage) {
+      <div class="error-panel">{{ errorMessage }}</div>
+    } @else if (reportsData; as los) {
+
+      <!-- LOS KPI cards -->
+      <div class="kpi-grid">
+        <article class="kpi-card">
+          <div class="kpi-icon blue-icon">▤</div>
+          <div class="kpi-label">Total Applications</div>
+          <div class="kpi-value">{{ los.summary.totalApplications | number }}</div>
+          <div class="kpi-caption">Applications received</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon green-icon">✓</div>
+          <div class="kpi-label">Applications Approved</div>
+          <div class="kpi-value">{{ los.summary.applicationsApproved | number }}</div>
+          <div class="kpi-caption">Successfully approved</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon red-icon">×</div>
+          <div class="kpi-label">Applications Rejected</div>
+          <div class="kpi-value">{{ los.summary.applicationsRejected | number }}</div>
+          <div class="kpi-caption">Rejected applications</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon orange-icon">◷</div>
+          <div class="kpi-label">Applications Pending</div>
+          <div class="kpi-value">{{ los.summary.applicationsPending | number }}</div>
+          <div class="kpi-caption">Awaiting processing</div>
+        </article>
+      </div>
+
+      <!-- LOS funnel and trend -->
+      <div class="los-visual-grid">
+
+        <article class="report-panel">
+          <div class="panel-title-row">
+            <div>
+              <h3>Application Funnel</h3>
+              <p>Current application stage summary</p>
+            </div>
+            <span class="mini-badge">LOS</span>
+          </div>
+
+          <div class="funnel-list">
+            <div class="funnel-item">
+              <div class="funnel-label">
+                <span>Applications</span>
+                <strong>{{ los.summary.totalApplications | number }}</strong>
+              </div>
+              <div class="funnel-track">
+                <div class="funnel-fill funnel-blue"
+                  [style.width.%]="los.summary.totalApplications > 0 ? 100 : 0">
+                </div>
+              </div>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-label">
+                <span>Approved</span>
+                <strong>{{ los.summary.applicationsApproved | number }}</strong>
+              </div>
+              <div class="funnel-track">
+                <div class="funnel-fill funnel-green"
+                  [style.width.%]="los.summary.totalApplications > 0
+                    ? (los.summary.applicationsApproved / los.summary.totalApplications * 100 > 100
+                      ? 100
+                      : los.summary.applicationsApproved / los.summary.totalApplications * 100)
+                    : 0">
+                </div>
+              </div>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-label">
+                <span>Rejected</span>
+                <strong>{{ los.summary.applicationsRejected | number }}</strong>
+              </div>
+              <div class="funnel-track">
+                <div class="funnel-fill funnel-red"
+                  [style.width.%]="los.summary.totalApplications > 0
+                    ? (los.summary.applicationsRejected / los.summary.totalApplications * 100 > 100
+                      ? 100
+                      : los.summary.applicationsRejected / los.summary.totalApplications * 100)
+                    : 0">
+                </div>
+              </div>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-label">
+                <span>Pending</span>
+                <strong>{{ los.summary.applicationsPending | number }}</strong>
+              </div>
+              <div class="funnel-track">
+                <div class="funnel-fill funnel-orange"
+                  [style.width.%]="los.summary.totalApplications > 0
+                    ? (los.summary.applicationsPending / los.summary.totalApplications * 100 > 100
+                      ? 100
+                      : los.summary.applicationsPending / los.summary.totalApplications * 100)
+                    : 0">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="chart-footnote">
+            Progress bars show each stage as a share of total applications.
+          </p>
+        </article>
+
+        <article class="report-panel">
+          <div class="panel-title-row">
+            <div>
+              <h3>Application Performance</h3>
+              <p>Current totals from the LOS dashboard API</p>
+            </div>
+            <span class="mini-badge">Overview</span>
+          </div>
+
+          <div class="los-performance">
+            <div class="performance-circle"
+              [style.--approved-ratio]="los.summary.totalApplications > 0
+                ? (los.summary.applicationsApproved / los.summary.totalApplications * 100 > 100
+                  ? 100
+                  : los.summary.applicationsApproved / los.summary.totalApplications * 100)
+                : 0">
+              <div class="circle-inner">
+                <strong>{{ los.summary.totalApplications > 0
+                  ? (los.summary.applicationsApproved / los.summary.totalApplications * 100 | number:'1.0-0')
+                  : 0 }}%</strong>
+                <span>Approved</span>
+              </div>
+            </div>
+
+            <div class="performance-legend">
+              <div>
+                <span><i class="legend-dot blue-dot"></i>Total applications</span>
+                <strong>{{ los.summary.totalApplications | number }}</strong>
+              </div>
+              <div>
+                <span><i class="legend-dot green-dot"></i>Approved</span>
+                <strong>{{ los.summary.applicationsApproved | number }}</strong>
+              </div>
+              <div>
+                <span><i class="legend-dot red-dot"></i>Rejected</span>
+                <strong>{{ los.summary.applicationsRejected | number }}</strong>
+              </div>
+              <div>
+                <span><i class="legend-dot orange-dot"></i>Pending</span>
+                <strong>{{ los.summary.applicationsPending | number }}</strong>
+              </div>
+            </div>
+          </div>
+          <p class="chart-footnote">
+            Approval rate is calculated from the summary values returned by the API.
+          </p>
+        </article>
+
+      </div>
+    }
+
+    <!-- LOS detailed reports -->
+    <article class="report-panel detail-panel">
+      <div class="panel-title-row">
+        <div>
+          <span class="report-number">01</span>
+          <h3>Application Summary Report</h3>
+          <p>Application summary data by branch</p>
+        </div>
+      </div>
+
+      @if (reportsData; as los) {
+        <div class="table-responsive">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Total</th>
+                <th>Approved</th>
+                <th>Rejected</th>
+                <th>Pending</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Applications</td>
+                <td>{{ los.summary.totalApplications | number }}</td>
+                <td>{{ los.summary.applicationsApproved | number }}</td>
+                <td>{{ los.summary.applicationsRejected | number }}</td>
+                <td>{{ los.summary.applicationsPending | number }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="empty-message">Application summary is not available.</p>
+      }
+    </article>
+  </section>
+
+  <!-- LMS REPORTS -->
+  <section class="system-section lms-section">
+    <div class="system-heading lms-heading">
+      <div class="system-heading-icon">M</div>
+      <div>
+        <h2>LMS — Loan Management System</h2>
+        <p>Loan portfolio, EMI collections, overdue and prepayment analytics</p>
+      </div>
+    </div>
+
+    @if (lmsReportsData; as lms) {
+      <div class="kpi-grid">
+        <article class="kpi-card">
+          <div class="kpi-icon green-icon">▣</div>
+          <div class="kpi-label">Total Loans</div>
+          <div class="kpi-value">{{ lms.summary.totalLoans | number }}</div>
+          <div class="kpi-caption">Loan accounts</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon blue-icon">↗</div>
+          <div class="kpi-label">Active Loans</div>
+          <div class="kpi-value">{{ lms.summary.activeLoans | number }}</div>
+          <div class="kpi-caption">Currently active</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon purple-icon">✓</div>
+          <div class="kpi-label">Closed Loans</div>
+          <div class="kpi-value">{{ lms.summary.closedLoans | number }}</div>
+          <div class="kpi-caption">Completed accounts</div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon red-icon">!</div>
+          <div class="kpi-label">NPA Loans</div>
+          <div class="kpi-value">—</div>
+          <!-- <div class="kpi-value">{{ lms.summary.npaLoans | number }}</div> -->
+          <div class="kpi-caption">Non-performing accounts</div>
+        </article>
+      </div>
+    } @else {
+      <div class="loading-panel">Loading LMS summary...</div>
+    }
+
+    <!-- Loan portfolio and EMI collection -->
+    <div class="report-two-column">
+
+      <article class="report-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="report-number">01</span>
+            <h3>Loan Portfolio Report</h3>
+            <p>Portfolio grouped by loan product</p>
+          </div>
+        </div>
+
+        @if (isLoanPortfolioLoading) {
+          <p class="loading-text">Loading loan portfolio...</p>
+        } @else if (loanPortfolioError) {
+          <p class="error-text">{{ loanPortfolioError }}</p>
+        } @else if (loanPortfolioData.length > 0) {
+          <div class="table-responsive">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Active Loans</th>
+                  <th>Outstanding Amount</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of loanPortfolioData; track item.product) {
+                  <tr>
+                    <td>{{ item.product }}</td>
+                    <td>{{ item.activeLoans | number }}</td>
+                    <td>{{ item.outstandingAmount | number:'1.2-2' }}</td>
+                    <td>{{ item.percentage | number:'1.1-2' }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-message">No loan portfolio records were returned.</p>
+        }
+      </article>
+
+      <article class="report-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="report-number">02</span>
+            <h3>EMI Collection Report</h3>
+            <p>Compare billed, collected and pending EMI amounts</p>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <label>
+            From Date
+            <input type="date" [(ngModel)]="fromDate">
+          </label>
+          <label>
+            To Date
+            <input type="date" [(ngModel)]="toDate">
+          </label>
+        </div>
+
+        <div class="filter-actions">
+          <button type="button" class="search-button" (click)="applyDateFilters()">
+            Apply Filters
+          </button>
+          <button type="button" class="clear-button" (click)="clearDateFilters()">
+            Clear
+          </button>
+        </div>
+
+        @if (isEMILoading) {
+          <p class="loading-text">Loading EMI collection...</p>
+        } @else if (emiError) {
+          <p class="error-text">{{ emiError }}</p>
+        } @else if (emiCollectionData.length > 0) {
+          <div class="table-responsive">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Particulars</th>
+                  <th>Count</th>
+                  <th>Amount</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of emiCollectionData; track item.particulars) {
+                  <tr>
+                    <td>{{ item.particulars }}</td>
+                    <td>{{ item.count | number }}</td>
+                    <td>{{ item.amount | number:'1.2-2' }}</td>
+                    <td>{{ item.percentage | number:'1.1-2' }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-message">No EMI collection records were returned.</p>
+        }
+      </article>
+
+    </div>
+
+    <!-- Overdue report -->
+    <article class="report-panel detail-panel">
+      <div class="panel-title-row">
+        <div>
+          <span class="report-number">03</span>
+          <h3>Overdue Report</h3>
+          <p>Outstanding payments grouped by overdue duration</p>
+        </div>
+      </div>
+
+      <div class="filter-row single-filter">
+        <label>
+          As On Date
+          <input type="date" [(ngModel)]="asOnDate">
+        </label>
+        <div class="filter-actions">
+          <button type="button" class="search-button" (click)="applyOverdueDate()">
+            Search
+          </button>
+          <button type="button" class="clear-button" (click)="clearOverdueDate()">
+            Clear
+          </button>
+        </div>
+      </div>
+
+      @if (isOverdueLoading) {
+        <p class="loading-text">Loading overdue report...</p>
+      } @else if (overdueError) {
+        <p class="error-text">{{ overdueError }}</p>
+      } @else if (overdueData.length > 0) {
+        <div class="table-responsive">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Days Overdue</th>
+                <th>Accounts</th>
+                <th>Outstanding Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of overdueData; track item.daysOverdue) {
+                <tr>
+                  <td>{{ item.daysOverdue }}</td>
+                  <td>{{ item.accounts | number }}</td>
+                  <td>{{ item.outstandingAmount | number:'1.2-2' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="empty-message">No overdue records were returned.</p>
+      }
+    </article>
+
+    <!-- Disbursement and prepayment -->
+    <div class="report-two-column">
+
+      <article class="report-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="report-number">04</span>
+            <h3>Disbursement Report</h3>
+            <p>Loans disbursed during the selected period</p>
+          </div>
+        </div>
+
+        @if (isDisbursementLoading) {
+          <p class="loading-text">Loading disbursement report...</p>
+        } @else if (disbursementError) {
+          <p class="error-text">{{ disbursementError }}</p>
+        } @else if (disbursementData.length > 0) {
+          <div class="table-responsive">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Loans Disbursed</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of disbursementData; track item.month) {
+                  <tr>
+                    <td>{{ item.month }}</td>
+                    <td>{{ item.loansDisbursed | number }}</td>
+                    <td>{{ item.disbursementAmount | number:'1.2-2' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-message">No disbursement records were returned.</p>
+        }
+      </article>
+
+      <article class="report-panel">
+        <div class="panel-title-row">
+          <div>
+            <span class="report-number">05</span>
+            <h3>Prepayment Report</h3>
+            <p>Part-payment and foreclosure activity</p>
+          </div>
+        </div>
+
+        @if (isPrepaymentLoading) {
+          <p class="loading-text">Loading prepayment report...</p>
+        } @else if (prepaymentError) {
+          <p class="error-text">{{ prepaymentError }}</p>
+        } @else if (prepaymentData.length > 0) {
+          <div class="table-responsive">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Accounts</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of prepaymentData; track item.type) {
+                  <tr>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.accounts | number }}</td>
+                    <td>{{ item.prepaymentAmount | number:'1.2-2' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="empty-message">No prepayment records were returned.</p>
+        }
+      </article>
+
+    </div>
+
+  </section>
+
+  <footer class="reports-footer">
+    <span>FinSure Loans · LOS &amp; LMS Analytics</span>
+    <span>Reports are based on data returned by your backend APIs.</span>
+  </footer>
+
+</div>
