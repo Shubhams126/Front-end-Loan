@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { LoanAccounts } from './loan-accounts/loan-accounts';
+import { EmiSchedules } from './emi-schedules/emi-schedules';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet],
+  imports: [RouterOutlet, LoanAccounts, EmiSchedules],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
