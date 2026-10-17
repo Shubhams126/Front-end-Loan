@@ -3,7 +3,9 @@ import {  ForeclosureService } from '../foreclosureservice';
 import { error } from 'console';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ForeRequestService } from '../fore-request-service';
 
+declare var Razorpay: any;
 @Component({
   selector: 'app-fore-closure',
   imports: [CommonModule,ReactiveFormsModule],
@@ -12,7 +14,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class ForeClosure {
 
-  constructor(private service:ForeclosureService){
+  constructor(private service:ForeclosureService,private ser:ForeRequestService){
      this.getLoanAccounts();
      this.myreq();
   }
@@ -24,7 +26,7 @@ export class ForeClosure {
     this.service.getloanaccounts().subscribe({
        next:res=>{
         console.log(res.data)
-        this.loanaccounts=res;
+        this.loanaccounts=res.data;
        if (this.loanaccounts.length > 0) {
           this.selectedLoan = this.loanaccounts[0];
         }
@@ -82,11 +84,13 @@ submitrequest(data:any)
   });
 }
 
+myrequests:any
 myreq()
 {
   this.service.myrequest().subscribe({
     next: res=>{
        console.log(res.data);
+       this.myrequests=res.data;
     },
     error:err=>{
        console.log(err);
@@ -94,4 +98,54 @@ myreq()
   })
 }
 
+
+payForeClosure(request: any) {
+  const requestId = request.requestId;
+  this.ser.createForeClosureOrder(requestId).subscribe({
+    next: (res: any) => {
+      console.log('Foreclosure Order:', res);
+      const orderId = res.orderId;
+      const amount = request.foreClosureType === 'Full'
+        ? request.foreClosureAmount
+        : request.partialAmount;
+      const options = {
+        key: 'rzp_test_SguRsFLUPmLB46',
+        amount: amount * 100,
+        currency: 'INR',
+        name: 'Loan Management System',
+        description: 'Foreclosure Payment',
+        order_id: orderId,
+        handler: (response: any) => {
+          const data = {
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            requestId: requestId,
+            paymentMode: 'UPI'
+          };
+          this.ser.verifypayment(data).subscribe({
+            next: (verifyRes: any) => {
+              console.log('Verification:', verifyRes);
+              alert('Foreclosure payment successful!');
+               this.myreq();
+            },
+            error: (err: any) => {
+              console.error(err);
+              alert('Payment verification failed.');
+            }
+          });
+        },
+        theme: {
+          color: '#3399cc'
+        }
+      };
+      const razorpay = new Razorpay(options);
+      razorpay.open();
+    },
+    error: (err: any) => {
+      console.error('Order creation failed:', err);
+      alert('Unable to create foreclosure payment order.');
+    }
+  });
+}
 }

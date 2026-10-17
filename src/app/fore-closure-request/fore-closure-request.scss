@@ -1,0 +1,86 @@
+.request-container {
+  background: #fff;
+  padding: 35px 32px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+  width: 100%;
+}
+
+.request-container h2 {
+  font-size: 27px;
+  font-weight: 700;
+  color: #172b45;
+}
+
+.subtitle {
+  color: #64748b;
+  margin: 10px 0 25px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.requests-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.requests-table th {
+  text-align: left;
+  padding: 16px;
+  font-weight: 500;
+  color: #263e5c;
+  border-bottom: 1px solid #dce2e9;
+}
+
+.requests-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #dce2e9;
+}
+
+.requests-table tbody tr:hover {
+  background: #f1f4f8;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 9px 15px;
+  border-radius: 22px;
+  background: #fff5eb;
+  color: #e85c16;
+  font-size: 12px;
+}
+
+.status-badge.approved,
+.status-badge.paid {
+  background: #e4f6eb;
+  color: #13834d;
+}
+
+.status-badge.rejected {
+  background: #fde8e8;
+  color: #cf3030;
+}
+
+.view-btn {
+  background: #1269ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 19px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.view-btn:hover {
+  background: #0754d5;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 30px !important;
+}

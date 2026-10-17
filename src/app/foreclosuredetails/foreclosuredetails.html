@@ -1,0 +1,90 @@
+
+<div class="details-container">
+ <!-- (click)="goBack()" -->
+  <div class="top-bar">
+    <button class="back-btn">← Back</button>
+    <span class="status-badge">{{ details?.status }}</span>
+  </div>
+
+  <div class="details-grid">
+
+    <!-- Loan Details -->
+    <div class="details-card">
+      <h2>Loan & Customer Details</h2>
+
+      <div class="detail-item">
+        <label>Loan Account No.</label>
+        <strong>{{ details?.loanAccountNo }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Customer Name</label>
+        <strong>{{ details?.customerName }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Loan Account ID</label>
+        <strong>{{ details?.loanAccountId }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Outstanding Principal</label>
+        <strong>₹ {{ details?.outstandingPrincipal | number:'1.2-2' }}</strong>
+      </div>
+    </div>
+
+    <!-- Foreclosure Details -->
+    <div class="details-card">
+      <h2>Foreclosure Details</h2>
+
+      <div class="detail-item">
+        <label>Request ID</label>
+        <strong>{{ details?.requestId }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Request Date</label>
+        <strong>{{ details?.requestedDate | date:'dd MMM yyyy, hh:mm a' }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Foreclosure Type</label>
+        <strong>{{ details?.foreClosureType }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Foreclosure Amount</label>
+        <strong>₹ {{ details?.foreClosureAmount | number:'1.2-2' }}</strong>
+      </div>
+
+      <div class="detail-item">
+        <label>Request Category</label>
+        <strong>{{ details?.requestCategory }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-card">
+    <h3>Review Foreclosure Request</h3>
+    <p>Please review the request details before making a decision.</p>
+
+    <div class="action-buttons">
+      <button
+        class="approve-btn"
+        [disabled]="details?.status !== 'Pending'"
+         (click)="approveRequest()" >
+        Approve
+      </button>
+
+      <button
+        class="reject-btn"
+        [disabled]="details?.status !== 'Pending'"
+        (click)="rejectRequest()">
+        Reject
+      </button>
+    </div>
+  </div>
+ 
+</div>

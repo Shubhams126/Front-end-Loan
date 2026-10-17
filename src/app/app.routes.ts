@@ -14,6 +14,8 @@ import { OfficerKyc } from './officer-kyc/officer-kyc';
 import { CustomerKyc } from './customer-kyc/customer-kyc';
 import { EmiPayment } from './emi-payment/emi-payment';
 import { ForeClosure } from './fore-closure/fore-closure';
+import { ForeClosureRequest } from './fore-closure-request/fore-closure-request';
+import { Foreclosuredetails } from './foreclosuredetails/foreclosuredetails';
 
 import { ApplyLoanComponent } from './pages/apply-loan/apply-loan';
 import { LoanDealComponent } from './pages/loan-deal/loan-deal';
@@ -35,6 +37,14 @@ export const routes: Routes = [
 
   { path: 'officer-dashboard', redirectTo: 'officer/dashboard' },
   { path: 'customer-dashboard', redirectTo: 'customer/dashboard' },
+   
+   {path :'emi', component : EmiPayment},
+   {path :'foreclosure', component : ForeClosure},
+  {path :'foreclorequest', component : ForeClosureRequest},
+
+  { path: 'foreclosure-details/:id', component: Foreclosuredetails},
+
+ 
 
   { path: 'customer/kyc', component: CustomerKyc },
   { path: 'officer/kyc', component: OfficerKyc },

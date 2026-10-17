@@ -16,11 +16,15 @@
 
     <label class="field-label">Loan Account Number</label>
 
-    <select class="form-select" (change)="onChangeLoan($event)">
-      <option *ngFor="let loan of loanaccounts"[value]="loan.loanAccountId">
-        {{ loan.loanAccountNo }}
-      </option>
-    </select>
+    <select class="form-select"
+        (change)="onChangeLoan($event)">
+  <option value="">Select Loan Account</option>
+  <option *ngFor="let loan of loanaccounts"
+          [value]="loan.loanAccountId">
+    {{ loan.loanAccountNo }}
+  </option>
+
+</select>
 
     <div class="loan-summary" *ngIf="selectedLoan">
       <div class="summary-item">
@@ -126,5 +130,74 @@
 
 </div>
 
+
+<div class="requests-container">
+  <h2>My Foreclosure Requests</h2>
+  <div class="table-responsive">
+    <table class="requests-table">
+      <thead>
+        <tr>
+          <th>Loan Account</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Reason</th>
+          <th>Status</th>
+           <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let req of myrequests">
+          <td class="loan-account">
+            {{ req.loanAccountId }}
+          </td>
+          <td>
+            ₹ {{ req.foreClosureAmount | number:'1.2-2' }}
+          </td>
+          <td>{{ req.foreClosureType }}</td>
+          <td>{{ req.reason || 'Nil' }}</td>
+          <td>
+            <span class="status-badge"
+                  [ngClass]="{
+                    'pending': req.status?.toLowerCase() === 'pending',
+                    'paid': req.status?.toLowerCase() === 'paid',
+                    'approved': req.status?.toLowerCase() === 'approved',
+                    'rejected': req.status?.toLowerCase() === 'rejected'
+                  }">
+              {{ req.status }}
+            </span>
+          </td>
+
+           <td>
+      <button
+        *ngIf="req.status === 'Approved'"
+        class="btn btn-success"
+        (click)="payForeClosure(req)">
+        Pay Now
+      </button>
+
+      <span *ngIf="req.status === 'Pending'">
+        Awaiting Approval
+      </span>
+
+      <span *ngIf="req.status === 'Rejected'">
+        Rejected
+      </span>
+
+      <span *ngIf="req.status === 'Paid'">
+        Paid
+      </span>
+    </td>
+  
+        </tr>
+        <tr *ngIf="!myrequests || myrequests.length === 0">
+          <td colspan="5" class="empty-message">
+            No foreclosure requests found.
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
 
 
