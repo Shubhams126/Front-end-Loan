@@ -1,5 +1,12 @@
-
 import { Routes } from '@angular/router';
+import { Cibil } from './cibil/cibil';
+import { CustomerList } from './customer-list/customer-list';
+import { ScoreCard } from './scorecard/scorecard';
+import { EligibilityResult } from './eligibilityresult/eligibilityresult';
+import { ManualReview } from './manualreview/manualreview';
+
+
+
 import { Auth } from './auth/auth';
 import { CustomerDashboard } from './customer-dashboard/customer-dashboard';
 import { OfficerDashboard } from './officer-dashboard/officer-dashboard';
@@ -10,14 +17,25 @@ import { ForeClosure } from './fore-closure/fore-closure';
 import { ForeClosureRequest } from './fore-closure-request/fore-closure-request';
 import { Foreclosuredetails } from './foreclosuredetails/foreclosuredetails';
 
+import { ApplyLoanComponent } from './pages/apply-loan/apply-loan';
+import { LoanDealComponent } from './pages/loan-deal/loan-deal';
+import { SanctionComponent } from './pages/sanction/sanction';
+import { DisbursementComponent } from './pages/disbursement/disbursement';
+import { EmiSchedules } from './emi-schedules/emi-schedules';
+import { LoanAccounts } from './loan-accounts/loan-accounts';
+
+import { Dashboard } from './pages/dashboard/dashboard';
+import { Reports } from './pages/reports/reports';
+import { SupportTickets } from './pages/support-tickets/support-tickets';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+
   { path: 'login', component: Auth },
 
   { path: 'officer/dashboard', component: OfficerDashboard },
   { path: 'customer/dashboard', component: CustomerDashboard },
 
-    { path: 'officer-dashboard', redirectTo: 'officer/dashboard' },
+  { path: 'officer-dashboard', redirectTo: 'officer/dashboard' },
   { path: 'customer-dashboard', redirectTo: 'customer/dashboard' },
    
    {path :'emi', component : EmiPayment},
@@ -26,13 +44,46 @@ export const routes: Routes = [
 
   { path: 'foreclosure-details/:id', component: Foreclosuredetails},
 
-  { path: '**', redirectTo: 'login' }, 
+ 
+
+  { path: 'customer/kyc', component: CustomerKyc },
+  { path: 'officer/kyc', component: OfficerKyc },
+     
+    {path:'cibil',component:Cibil},
+    {path:'customers',component:CustomerList},
+    {path:'scorecard/:id',component:ScoreCard},
+    {path:'eligibility',component:EligibilityResult},
+    {path:'manual-review',component:ManualReview}
+  { path: 'emi', component: EmiPayment },
+  { path: 'foreclosure', component: ForeClosure },
+
+  { path: 'loan-accounts', component: LoanAccounts },
+  { path: 'emi-schedules', component: EmiSchedules },
+
+  { path: 'apply-loan', component: ApplyLoanComponent },
+  { path: 'loan-deal', component: LoanDealComponent },
+  { path: 'sanction', component: SanctionComponent },
+  { path: 'disbursement', component: DisbursementComponent },{
+    path: 'dashboard',
+    component: Dashboard
+  },
   {
-  path: 'customer/kyc',
-  component: CustomerKyc
-},
- {
-  path: 'officer/kyc',
-  component: OfficerKyc
-}
-];
+    path: 'reports',
+    component: Reports
+  },
+  {
+    path: 'support-tickets',
+    component: SupportTickets
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'dashboard'
+  }
+
+  { path: '**', redirectTo: 'login' }
+
