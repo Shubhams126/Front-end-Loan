@@ -30,15 +30,14 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "security": {
               "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
             }
           },
           "configurations": {
@@ -96,7 +95,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ]
           }
         }
@@ -104,6 +103,6 @@
     }
   },
   "cli": {
-    "analytics": "163fcb37-d537-49c3-b86b-48fef99d507b"
+    "analytics": "e610fbfd-6e5c-4da6-a8e5-878ed9fb391b"
   }
 }
