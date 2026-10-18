@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+
 import { LoanAccounts } from './loan-accounts/loan-accounts';
 import { EmiSchedules } from './emi-schedules/emi-schedules';
 import { Component } from '@angular/core';
