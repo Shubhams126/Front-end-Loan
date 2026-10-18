@@ -2,11 +2,15 @@
 <div class="dashboard-layout customer-layout">
 
   <aside class="sidebar customer-sidebar">
+
+    <!-- Customer Menu -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('customer')">
       <span class="menu-icon">◉</span>
       <span>Customer</span>
-      <span class="chevron">{{ openMenus['customer'] ? '⌄' : '›' }}</span>
+      <span class="chevron">
+        {{ openMenus['customer'] ? '⌄' : '›' }}
+      </span>
     </button>
 
     <div class="submenu" *ngIf="openMenus['customer']">
@@ -16,55 +20,69 @@
       <a routerLink="/customer/profile">Profile</a>
       <a routerLink="/customer/kyc">KYC Verification</a>
       <a routerLink="/customer/cibil-score">CIBIL Score</a>
-      <a routerLink="/customer/eligibility-result">Eligibility Result</a>
+      <a routerLink="/customer/eligibility-result">
+        Eligibility Result
+      </a>
     </div>
 
+    <!-- Loan Services -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('loans')">
       <span class="menu-icon">▤</span>
       <span>Loan Services</span>
-      <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
+      <span class="chevron">
+        {{ openMenus['loans'] ? '⌄' : '›' }}
+      </span>
     </button>
 
     <div class="submenu" *ngIf="openMenus['loans']">
       <a routerLink="/apply-loan">Apply Loan</a>
       <a routerLink="/customer/track-status">Track Status</a>
-      <a routerLink="/customer/dashboard">◉ Dashboard</a>
-      <a routerLink="/foreclosure">Foreclosure Request</a>
+      <a routerLink="/customer/foreclosure">Foreclosure Request</a>
     </div>
 
+    <!-- Payments -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('payments')">
       <span class="menu-icon">▣</span>
       <span>Payments</span>
-      <span class="chevron">{{ openMenus['payments'] ? '⌄' : '›' }}</span>
+      <span class="chevron">
+        {{ openMenus['payments'] ? '⌄' : '›' }}
+      </span>
     </button>
 
     <div class="submenu" *ngIf="openMenus['payments']">
       <a routerLink="/customer/emi-schedule">EMI Schedule</a>
-      <a routerLink="/customer/make-payments">Make Payments</a>
       <a routerLink="/customer/payment-history">Payment History</a>
       <a routerLink="/customer/my-penalties">My Penalties</a>
     </div>
 
+    <!-- Support -->
     <a class="menu-item" routerLink="/customer/support">
       <span class="menu-icon">▣</span>
       <span>Support</span>
     </a>
 
+    <!-- Logout -->
     <button class="menu-item logout-item" (click)="logout()">
       <span class="menu-icon">⇥</span>
       <span>Logout</span>
     </button>
+
   </aside>
 
   <main class="dashboard-main">
+
     <header class="top-bar">
       <div class="top-bar-title">Loan Management System</div>
-      <button class="notification-button" type="button"
+
+      <button class="notification-button"
+        type="button"
         aria-label="Notifications">
         ♧
-        <span class="notification-count">{{ notificationCount }}</span>
+        <span class="notification-count">
+          {{ notificationCount }}
+        </span>
       </button>
     </header>
 
@@ -77,7 +95,10 @@
       <h1>Customer Loan Dashboard</h1>
 
       <div class="loan-selector">
-        <label for="loanAccount">Select Loan Account Number</label>
+        <label for="loanAccount">
+          Select Loan Account Number
+        </label>
+
         <select id="loanAccount">
           <option value="">Select Loan Account</option>
           <option value="LN001">LN001</option>
@@ -85,8 +106,11 @@
       </div>
 
       <div class="customer-stats">
+
         <div class="stat-card">
-          <div class="stat-label">Total Active Loan Accounts</div>
+          <div class="stat-label">
+            Total Active Loan Accounts
+          </div>
           <strong>1</strong>
         </div>
 
@@ -104,8 +128,10 @@
           <div class="stat-label">Next EMI Date</div>
           <strong>Not available</strong>
         </div>
+
       </div>
     </section>
+
   </main>
 
 </div>

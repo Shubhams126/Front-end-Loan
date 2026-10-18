@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import {  ForeclosureService } from '../foreclosureservice';
-import { error } from 'console';
+
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ForeRequestService } from '../fore-request-service';
 
+import { CustomerDashboard } from '../customer-dashboard/customer-dashboard';
+
 declare var Razorpay: any;
 @Component({
   selector: 'app-fore-closure',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,CustomerDashboard],
   templateUrl: './fore-closure.html',
   styleUrl: './fore-closure.scss',
 })
@@ -21,37 +23,43 @@ export class ForeClosure {
   
   loanaccounts:any;
   selectedLoan:any;
-  getLoanAccounts()
-  {
-    this.service.getloanaccounts().subscribe({
-       next:res=>{
-        console.log(res.data)
-        this.loanaccounts=res.data;
-       if (this.loanaccounts.length > 0) {
-          this.selectedLoan = this.loanaccounts[0];
-        }
-        this.foreclosureform.patchValue({ 
+  getLoanAccounts() {
+  this.service.getloanaccounts().subscribe({
+    next: (res: any) => {
+      console.log(res.data);
+
+      this.loanaccounts = res.data ?? [];
+
+      if (this.loanaccounts.length > 0) {
+        this.selectedLoan = this.loanaccounts[0];
+
+        this.foreclosureform.patchValue({
           loanAccountId: this.selectedLoan.loanAccountId,
           foreClosureAmount: this.selectedLoan.outstandingPrincipal
         });
-       },
-       error:err=>{
-         console.log(err)
-       }
-    })
-  }
+      } else {
+        this.selectedLoan = null;
+      }
+    },
+    error: (err: any) => {
+      console.error('Error loading loan accounts:', err);
+    }
+  });
+}
 
 onChangeLoan(event: any) {
-  let id = Number(event.target.value);
+  const id = Number(event.target.value);
 
   this.selectedLoan = this.loanaccounts.find(
     (loan: any) => loan.loanAccountId === id
   );
 
-  this.foreclosureform.patchValue({
-    loanAccountId: id,
-    foreClosureAmount: this.selectedLoan.outstandingPrincipal
-  });
+  if (this.selectedLoan) {
+    this.foreclosureform.patchValue({
+      loanAccountId: id,
+      foreClosureAmount: this.selectedLoan.outstandingPrincipal
+    });
+  }
 }
 
 foreclosureform=new FormGroup({

@@ -9,6 +9,7 @@
       <span>Dashboard</span>
     </a>
 
+    <!-- Customer Management -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('customers')">
       <span class="menu-icon">♧</span>
@@ -23,6 +24,7 @@
       <a routerLink="/officer/score-cards">Score Cards</a>
     </div>
 
+    <!-- Loan Processing -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('loans')">
       <span class="menu-icon">▣</span>
@@ -30,12 +32,14 @@
       <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
     </button>
 
- <div class="submenu" *ngIf="openMenus['loans']">
-  <a routerLink="/officer/loan-applications">Loan Applications</a>
-  <a routerLink="/loan-deal">Loan Deal</a>
-  <a routerLink="/sanction">Sanction Letter</a>
-  <a routerLink="/disbursement">Disbursement</a>
-</div>
+    <div class="submenu" *ngIf="openMenus['loans']">
+      <a routerLink="/officer/loan-applications">Loan Applications</a>
+      <a routerLink="/loan-deal">Loan Deal</a>
+      <a routerLink="/sanction">Sanction Letter</a>
+      <a routerLink="/disbursement">Disbursement</a>
+    </div>
+
+    <!-- Requests & Collections -->
     <button class="menu-item menu-heading"
       (click)="toggleMenu('requests')">
       <span class="menu-icon">▤</span>
@@ -48,17 +52,21 @@
       <a routerLink="/officer/penalty-charges">Penalty Charges</a>
     </div>
 
+    <!-- Support -->
     <a class="menu-item" routerLink="/officer/support-tickets">
       <span class="menu-icon">▣</span>
       <span>Support Tickets</span>
     </a>
 
+    <!-- Logout -->
     <button class="menu-item logout-item" (click)="logout()">
       <span class="menu-icon">⇥</span>
       <span>Logout</span>
     </button>
+
   </aside>
 
+  <!-- Dashboard Content -->
   <main class="dashboard-main">
     <header class="welcome-bar">
       <h2>Welcome,</h2>
@@ -69,6 +77,7 @@
       <h1>Loan Management Dashboard</h1>
 
       <div class="stats-grid">
+
         <div class="stat-card">
           <div class="stat-label">Total Customers</div>
           <div class="stat-bottom">
@@ -124,6 +133,7 @@
             <strong>0</strong><span>📋</span>
           </div>
         </div>
+
       </div>
     </section>
   </main>

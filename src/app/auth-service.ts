@@ -6,11 +6,25 @@ import { Observable } from 'rxjs';
 export interface AuthResponse {
   success: boolean;
   message?: string;
-  token?: string;
-  role?: string;
+  token?: string | null;
+  role?: string | null;
   requires2FASetup?: boolean;
-  challengeId?: string;
-  qrCode?: string;
+  challengeId?: string | null;
+  qrCode?: string | null;
+}
+
+export interface LoginRequest {
+  email: string | null;
+  password: string | null;
+}
+
+export interface Setup2FARequest {
+  challengeId:any;
+}
+
+export interface VerifyOTPRequest {
+  challengeId:any;
+  otp:any;
 }
 
 @Injectable({
@@ -19,39 +33,44 @@ export interface AuthResponse {
 export class AuthService {
   private http = inject(HttpClient);
 
-  private url = 'https://localhost:44365/api/Auth/Register';
-  private url2 = 'https://localhost:44365/api/Auth/VerifyRegistrationOtp';
-  private url3 = 'https://localhost:44365/api/Auth/Login';
-  private url4 = 'https://localhost:44365/api/Auth/Setup2FA';
-  private url5 = 'https://localhost:44365/api/Auth/VerifyOTP';
-  private url6 = 'https://localhost:44365/api/Auth/GoogleLogin';
+  private baseUrl = 'https://localhost:44365/api/Auth';
 
   Register(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.url, data);
+    return this.http.post<AuthResponse>(
+      `${this.baseUrl}/Register`, data
+    );
   }
 
-  VerifyRegistrationOtp(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.url2, data);
+  VerifyRegistrationOtp(data: any){
+    return this.http.post<any>(
+      `${this.baseUrl}/VerifyRegistrationOtp`, data
+    );
   }
 
-  Login(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.url3, data);
+  Login(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(
+      `${this.baseUrl}/Login`, data
+    );
   }
 
-  Setup2FA(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.url4, data);
+  Setup2FA(data: Setup2FARequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(
+      `${this.baseUrl}/Setup2FA`, data
+    );
   }
 
-  VerifyOTP(data: any): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(this.url5, data);
+  VerifyOTP(data: VerifyOTPRequest){
+    return this.http.post<any>(
+      `${this.baseUrl}/VerifyOTP`, data
+    );
   }
-logout(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('role');
-}
 
-GoogleLogin(data: any): Observable<AuthResponse> {
-  return this.http.post<AuthResponse>(this.url6, data);
-}
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+  }
 
+  GoogleLogin(): void {
+    window.location.href = `${this.baseUrl}/GoogleLogin`;
+  }
 }
